@@ -1,0 +1,7 @@
+http:
+  port:"8081"
+  
+sfdc:
+  username:"satheesh.jamma@tcs.com"
+  password:"Krishnaveni3"
+  token:"vHDouyuW1BiJYpMKyWeEXijwo"

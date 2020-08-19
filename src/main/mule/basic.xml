@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd">
+	
+	<flow name="privateFlow" doc:id="2c23bf8d-bc0d-4a9a-9a99-42828180d8ed" >
+		<set-payload value="#[upper ('satish')]" doc:name="Set Payload" doc:id="2ce6f543-79c9-426f-8653-98f506f2fad6" />
+	</flow>
+	<flow name="basicFlow" doc:id="334bb872-7cb3-4b2b-9a8a-67faba57377f" >
+		<http:listener doc:name="Listener" doc:id="43f0ce72-be03-4788-8733-430b09e7e92c" config-ref="HTTP_Listener" path="/root" allowedMethods="GET">
+			<http:response reasonPhrase="Success" >
+			</http:response>
+		</http:listener>
+		<flow-ref doc:name="Flow Reference" doc:id="3a4bc8f8-5195-47de-ac7d-9d11742aec06" name="privateFlow" />
+		<vm:publish-consume queueName="goodbye" doc:name="Publish consume" doc:id="02df0227-5d3b-4955-ad99-484eb67dc2f5" config-ref="VMConfig" timeout="300"/>
+		<logger level="INFO" doc:name="Logger" doc:id="d97666b9-4ef3-480f-84f0-ffd1bff57eff" message="#['\n message:' ++ payload]"/>
+	</flow>
+	<flow name="basicFlow1" doc:id="9a41baa6-d080-4915-aa04-f008eb1eb230" >
+		<vm:listener queueName="goodbye" doc:name="Listener" doc:id="6159fcff-ad0d-4942-8bb0-24c9755429b6" config-ref="VMConfig"/>
+		<set-payload value="goodbye" doc:name="Set Payload" doc:id="c093dc89-0a03-48bc-99fb-bdcebd01e646" />
+	</flow>
+</mule>
